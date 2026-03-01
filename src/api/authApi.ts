@@ -78,6 +78,7 @@ export const authApi = {
       userID: loginResponse.userID,
       jwtToken: loginResponse.jwtToken,
       refreshToken: loginResponse.refreshToken,
+      about: loginResponse.about || '',
     };
     localStorage.setItem('user', JSON.stringify(user));
   },

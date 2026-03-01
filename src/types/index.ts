@@ -65,6 +65,7 @@ export interface LoginResponse {
   role: string;
   email?: string;
   userID?: string;
+  about?: string;
 }
 
 export interface UpdatePasswordRequest {

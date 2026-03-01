@@ -5,10 +5,9 @@ interface ProfileModalProps {
   user: AuthUser | null;
   isOpen: boolean;
   onClose: () => void;
-  onViewProfile: () => void;
 }
 
-export const ProfileModal = ({ user, isOpen, onClose, onViewProfile }: ProfileModalProps) => {
+export const ProfileModal = ({ user, isOpen, onClose }: ProfileModalProps) => {
   if (!isOpen || !user) return null;
 
   return (
@@ -30,10 +29,6 @@ export const ProfileModal = ({ user, isOpen, onClose, onViewProfile }: ProfileMo
               <label>Email</label>
               <p>{user.email || user.username}</p>
             </div>
-            <div className="info-item">
-              <label>Role</label>
-              <p className="role-badge">{user.role}</p>
-            </div>
             {user.about && (
               <div className="info-item">
                 <label>About</label>
@@ -47,9 +42,6 @@ export const ProfileModal = ({ user, isOpen, onClose, onViewProfile }: ProfileMo
           </div>
 
           <div className="modal-footer">
-            <button className="btn-view-profile" onClick={() => { onViewProfile(); onClose(); }}>
-              View Full Profile
-            </button>
             <button className="btn-close" onClick={onClose}>
               Close
             </button>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './Navigation.css';
 import { AuthUser } from '../types';
-import { ProfileModal } from './ProfileModal';
 import { ThemeToggle } from './ThemeToggle';
 
 interface NavigationProps {
@@ -12,7 +11,7 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ activeTab, onTabChange, user, onLogout }: NavigationProps) => {
-  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   return (
     <>
@@ -38,43 +37,45 @@ export const Navigation = ({ activeTab, onTabChange, user, onLogout }: Navigatio
             >
               Income
             </button>
-            {user && (
-              <>
-                <button
-                  className={`nav-link ${activeTab === 'profile' ? 'active' : ''}`}
-                  onClick={() => onTabChange('profile')}
-                >
-                  Profile
-                </button>
-              </>
-            )}
           </div>
           {user && (
             <div className="nav-user-section">
               <ThemeToggle />
-              <button
-                className="user-name-btn"
-                onClick={() => setIsProfileModalOpen(true)}
-                title="Click to view profile"
-              >
-                👤 {user.name}
-              </button>
-              <button className="nav-logout-btn" onClick={onLogout}>
-                Logout
-              </button>
+              <div className="user-dropdown">
+                <button
+                  className="user-name-btn"
+                  onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
+                  title="Click to open menu"
+                >
+                  👤 {user.name}
+                </button>
+                {isUserDropdownOpen && (
+                  <div className="dropdown-menu">
+                    <button
+                      className="dropdown-item"
+                      onClick={() => {
+                        onTabChange('profile');
+                        setIsUserDropdownOpen(false);
+                      }}
+                    >
+                      Profile
+                    </button>
+                    <button
+                      className="dropdown-item logout-item"
+                      onClick={() => {
+                        onLogout?.();
+                        setIsUserDropdownOpen(false);
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           )}
         </div>
       </nav>
-
-      {user && (
-        <ProfileModal
-          user={user}
-          isOpen={isProfileModalOpen}
-          onClose={() => setIsProfileModalOpen(false)}
-          onViewProfile={() => onTabChange('profile')}
-        />
-      )}
     </>
   );
 };

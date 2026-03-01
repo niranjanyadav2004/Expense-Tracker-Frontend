@@ -35,18 +35,18 @@ export const Profile = ({ user }: ProfileProps) => {
                 <label>Username</label>
                 <p>{user.username}</p>
               </div>
-              <div className="info-card">
-                <label>Role</label>
-                <p className="role-badge">{user.role}</p>
-              </div>
             </div>
 
-            {user.about && (
-              <div className="info-section">
-                <label>About</label>
-                <p className="about-text">{user.about}</p>
+            <div className="about-container">
+              <label className="about-label">About</label>
+              <div className="about-section">
+                {user.about ? (
+                  <p className="about-text">{user.about}</p>
+                ) : (
+                  <p className="about-text empty-about">No about information added yet.</p>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

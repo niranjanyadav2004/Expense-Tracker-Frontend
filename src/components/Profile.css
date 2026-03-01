@@ -44,9 +44,9 @@
 
 .info-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .info-card {
@@ -74,18 +74,18 @@
   word-break: break-word;
 }
 
-.info-section {
-  margin-top: 20px;
+.about-container {
+  margin-top: 0;
 }
 
-.info-section label {
+.about-label {
   font-size: 12px;
   text-transform: uppercase;
   color: var(--text-tertiary);
   font-weight: 600;
   letter-spacing: 0.5px;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .about-text {
@@ -97,15 +97,17 @@
   word-break: break-word;
 }
 
-.role-badge {
-  display: inline-block;
-  background-color: var(--badge-bg);
-  color: var(--badge-text);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  margin: 0;
+.about-section {
+  background-color: var(--bg-secondary);
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid var(--border-primary);
+  min-height: auto;
+}
+
+.about-text.empty-about {
+  color: var(--text-tertiary);
+  font-style: italic;
 }
 
 @media (max-width: 1024px) {
