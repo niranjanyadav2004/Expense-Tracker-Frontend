@@ -13,9 +13,9 @@
 }
 
 .analytics-modal {
-  background: white;
+  background: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 40px var(--card-shadow);
   max-width: 1000px;
   width: 100%;
   max-height: 90vh;
@@ -39,7 +39,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-primary);
   background: linear-gradient(135deg, #646cff 0%, #5558d8 100%);
   color: white;
 }
@@ -76,15 +76,15 @@
 }
 
 .chart-card {
-  background: #f9fafb;
+  background: var(--bg-secondary);
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-primary);
 }
 
 .chart-card h3 {
   margin: 0 0 20px 0;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 18px;
 }
 
@@ -103,16 +103,16 @@
 }
 
 .metric-card {
-  background: white;
+  background: var(--card-bg);
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-primary);
   text-align: center;
 }
 
 .metric-card h4 {
   margin: 0 0 10px 0;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -123,19 +123,11 @@
   margin: 0;
   font-size: 24px;
   font-weight: bold;
-  color: #1f2937;
-}
-
-.metric-value.income {
-  color: #10b981;
+  color: var(--text-primary);
 }
 
 .metric-value.expense {
-  color: #ef4444;
-}
-
-.metric-value.balance {
-  color: #646cff;
+  color: #fca5a5;
 }
 
 .summary-box {
@@ -171,14 +163,28 @@
   font-weight: 600;
 }
 
+@media (max-width: 1024px) {
+  .analytics-content {
+    padding: 25px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .analytics-modal {
     max-width: 95vw;
     max-height: 95vh;
+    border-radius: 8px;
   }
 
   .analytics-header {
     padding: 15px;
+    flex-direction: column;
+    gap: 1em;
+    text-align: center;
   }
 
   .analytics-header h2 {
@@ -186,16 +192,35 @@
   }
 
   .analytics-content {
-    padding: 20px;
-    gap: 20px;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .chart-card {
+    padding: 15px;
   }
 
   .metrics-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .metric-card {
+    padding: 15px;
+  }
+
+  .metric-value {
+    font-size: 20px;
   }
 
   .summary-list {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .summary-list li {
+    padding: 8px;
+    font-size: 13px;
   }
 }
 
@@ -204,17 +229,61 @@
     padding: 10px;
   }
 
+  .analytics-header {
+    padding: 10px;
+  }
+
+  .analytics-header h2 {
+    font-size: 16px;
+  }
+
+  .close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 24px;
+  }
+
   .analytics-content {
-    padding: 15px;
-    gap: 15px;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .chart-card {
+    padding: 10px;
+  }
+
+  .chart-card h3 {
+    font-size: 14px;
   }
 
   .metrics-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .metric-card {
     padding: 10px;
+  }
+
+  .metric-card h4 {
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+
+  .summary-box {
+    padding: 15px;
+  }
+
+  .summary-box h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .summary-list li {
+    padding: 6px;
+    font-size: 12px;
   }
 }

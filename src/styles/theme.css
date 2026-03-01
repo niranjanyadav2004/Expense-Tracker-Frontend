@@ -1,0 +1,149 @@
+/* Light Mode (Default) */
+:root.light-mode {
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --bg-hover: #e5e7eb;
+  
+  /* Text Colors */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-muted: #d1d5db;
+  
+  /* Border Colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  
+  /* Component Colors */
+  --navbar-bg: #ffffff;
+  --navbar-border: #e5e7eb;
+  --error-bg: #fee;
+  --error-text: #c33;
+  --error-border: #c33;
+  --success-bg: #efe;
+  --success-text: #3c3;
+  --success-border: #3c3;
+  
+  /* Card & Section */
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --card-shadow: rgba(0, 0, 0, 0.05);
+  
+  /* Button Colors */
+  --btn-primary-bg: #646cff;
+  --btn-primary-hover: #5558e3;
+  --btn-secondary-bg: #e5e7eb;
+  --btn-secondary-text: #1f2937;
+  --btn-secondary-hover: #d1d5db;
+  --btn-danger-bg: #ef4444;
+  --btn-danger-hover: #dc2626;
+  
+  /* Input Colors */
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-focus-border: #646cff;
+  --input-disabled-bg: #f3f4f6;
+  
+  /* Modal Colors */
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --modal-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Badge Colors */
+  --badge-bg: #dbeafe;
+  --badge-text: #1e40af;
+  
+  /* Stat Card Colors */
+  --stat-income-color: #10b981;
+  --stat-expense-color: #ef4444;
+  --stat-balance-color: #646cff;
+  
+  /* Landing Page Colors */
+  --landing-hero-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --landing-hero-text: #ffffff;
+  --landing-header-bg: rgba(255, 255, 255, 0.95);
+  --landing-feature-card-bg: #f9fafb;
+  --landing-feature-card-border: #e5e7eb;
+  --landing-section-bg: #ffffff;
+  --landing-how-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --landing-step-number-bg: #ffffff;
+  --landing-step-number-color: #667eea;
+  --landing-cta-button-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --landing-footer-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode */
+:root.dark-mode {
+  /* Background Colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --bg-hover: #4b5563;
+  
+  /* Text Colors */
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* Border Colors */
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+  
+  /* Component Colors */
+  --navbar-bg: #1f2937;
+  --navbar-border: #374151;
+  --error-bg: #7f2222;
+  --error-text: #fca5a5;
+  --error-border: #dc2626;
+  --success-bg: #22662d;
+  --success-text: #86efac;
+  --success-border: #22c55e;
+  
+  /* Card & Section */
+  --card-bg: #1f2937;
+  --card-border: #374151;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Button Colors */
+  --btn-primary-bg: #646cff;
+  --btn-primary-hover: #5558e3;
+  --btn-secondary-bg: #374151;
+  --btn-secondary-text: #f3f4f6;
+  --btn-secondary-hover: #4b5563;
+  --btn-danger-bg: #dc2626;
+  --btn-danger-hover: #b91c1c;
+  
+  /* Input Colors */
+  --input-bg: #374151;
+  --input-border: #4b5563;
+  --input-focus-border: #646cff;
+  --input-disabled-bg: #1f2937;
+  
+  /* Modal Colors */
+  --modal-bg: #1f2937;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --modal-shadow: rgba(0, 0, 0, 0.5);
+  
+  /* Badge Colors */
+  --badge-bg: #1e3a8a;
+  --badge-text: #93c5fd;
+  
+  /* Stat Card Colors */
+  --stat-income-color: #10b981;
+  --stat-expense-color: #fca5a5;
+  --stat-balance-color: #646cff;
+  --landing-hero-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+  --landing-hero-text: #f3f4f6;
+  --landing-header-bg: rgba(31, 41, 55, 0.95);
+  --landing-feature-card-bg: #1f2937;
+  --landing-feature-card-border: #374151;
+  --landing-section-bg: #111827;
+  --landing-how-gradient: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+  --landing-step-number-bg: #f3f4f6;
+  --landing-step-number-color: #646cff;
+  --landing-cta-button-gradient: linear-gradient(135deg, #646cff 0%, #5558e3 100%);
+  --landing-footer-bg: rgba(0, 0, 0, 0.3);
+}

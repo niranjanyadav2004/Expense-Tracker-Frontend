@@ -1,18 +1,18 @@
 .expense-list-container {
-  background: white;
+  background: var(--card-bg);
   padding: 1.5em;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px var(--card-shadow);
 }
 
 .expense-summary {
   margin-bottom: 1.5em;
   padding-bottom: 1em;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-primary);
 }
 
 .expense-summary h3 {
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 1.2em;
 }
 
@@ -22,14 +22,15 @@
 }
 
 .expense-item {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-primary);
   border-radius: 6px;
   padding: 1em;
   transitions: box-shadow 0.3s;
+  background: var(--bg-secondary);
 }
 
 .expense-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px var(--card-shadow);
 }
 
 .expense-header {
@@ -37,21 +38,23 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
+  flex-wrap: wrap;
+  gap: 0.5em;
 }
 
 .expense-header h4 {
   margin: 0;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .expense-amount {
   font-size: 1.2em;
   font-weight: 700;
-  color: #ef4444;
+  color: #fca5a5;
 }
 
 .expense-description {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0.5em 0;
   font-size: 0.95em;
 }
@@ -61,12 +64,13 @@
   gap: 1em;
   margin: 0.75em 0;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .badge {
   display: inline-block;
-  background-color: #dbeafe;
-  color: #1e40af;
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
   padding: 0.25em 0.75em;
   border-radius: 20px;
   font-size: 0.85em;
@@ -74,7 +78,7 @@
 }
 
 .date {
-  color: #9ca3af;
+  color: var(--text-tertiary);
   font-size: 0.9em;
 }
 
@@ -83,7 +87,7 @@
   gap: 0.5em;
   margin-top: 1em;
   padding-top: 1em;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--border-primary);
 }
 
 .btn-edit,
@@ -95,6 +99,7 @@
   cursor: pointer;
   font-weight: 500;
   transition: background-color 0.25s;
+  font-size: 0.9em;
 }
 
 .btn-edit {
@@ -104,15 +109,17 @@
 
 .btn-edit:hover:not(:disabled) {
   background-color: #2563eb;
+  transform: translateY(-2px);
 }
 
 .btn-delete {
-  background-color: #ef4444;
+  background-color: var(--btn-danger-bg);
   color: white;
 }
 
 .btn-delete:hover:not(:disabled) {
-  background-color: #dc2626;
+  background-color: var(--btn-danger-hover);
+  transform: translateY(-2px);
 }
 
 .btn-edit:disabled,
@@ -124,8 +131,14 @@
 .empty-state {
   text-align: center;
   padding: 3em 1em;
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-size: 1.1em;
+}
+
+@media (max-width: 1024px) {
+  .expense-list-container {
+    padding: 1.25em;
+  }
 }
 
 @media (max-width: 768px) {
@@ -137,7 +150,60 @@
     padding: 0.75em;
   }
 
+  .expense-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .expense-actions {
     flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    width: 100%;
+    padding: 0.6em;
+  }
+
+  .expense-meta {
+    gap: 0.5em;
+    font-size: 0.9em;
+  }
+
+  .expense-amount {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .expense-list-container {
+    padding: 0.75em;
+  }
+
+  .expense-item {
+    padding: 0.5em;
+  }
+
+  .expense-header h4 {
+    font-size: 0.9em;
+  }
+
+  .expense-description {
+    font-size: 0.85em;
+  }
+
+  .expense-amount {
+    font-size: 0.95em;
+  }
+
+  .badge {
+    padding: 0.2em 0.5em;
+    font-size: 0.75em;
+  }
+
+  .empty-state {
+    padding: 2em 0.5em;
+    font-size: 0.95em;
   }
 }
