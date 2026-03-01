@@ -151,7 +151,7 @@
 .stat-change {
   margin: 0.5em 0 0;
   font-size: 0.85em;
-  color: #9ca3af;
+  color: var(--text-tertiary);
 }
 
 .stat-card.income {
@@ -289,7 +289,7 @@
 }
 
 .latest-card h3 {
-  color: #1f2937;
+  color: var(--text-primary);
   margin-top: 0;
   margin-bottom: 1em;
   font-size: 1em;
@@ -300,7 +300,7 @@
 }
 
 .latest-content p strong {
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -319,17 +319,17 @@
 }
 
 .latest-content .meta {
-  color: #9ca3af;
+  color: var(--text-tertiary);
   font-size: 0.9em;
   margin-top: 0.75em;
 }
 
 .empty-state {
-  background: white;
+  background: var(--card-bg);
   padding: 3em 1em;
   border-radius: 8px;
   text-align: center;
-  color: #9ca3af;
+  color: var(--text-secondary);
   font-size: 1.1em;
 }
 
