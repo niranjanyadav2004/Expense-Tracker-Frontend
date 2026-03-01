@@ -1,0 +1,263 @@
+.dashboard {
+  padding: 1em 0;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2em;
+  grid-template-areas:
+    "header header"
+    "stats calendar"
+    "analytics calendar"
+    "transactions calendar"
+    "quickstats calendar";
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  grid-area: header;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #f3f4f6;
+  margin-bottom: 0;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 2em;
+  color: #1f2937;
+}
+
+.stats-grid {
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5em;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid;
+}
+
+.stat-card h3 {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.9em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  margin: 0.75em 0 0;
+  font-size: 2em;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.stat-change {
+  margin: 0.5em 0 0;
+  font-size: 0.85em;
+  color: #9ca3af;
+}
+
+.stat-card.income {
+  border-top-color: #10b981;
+}
+
+.stat-card.income .stat-value {
+  color: #10b981;
+}
+
+.stat-card.expense {
+  border-top-color: #ef4444;
+}
+
+.stat-card.expense .stat-value {
+  color: #ef4444;
+}
+
+.stat-card.balance {
+  border-top-color: #646cff;
+}
+
+.stat-card.balance .stat-value {
+  color: #646cff;
+}
+
+/* Analytics Section - Removed for simpler dashboard */
+
+/* Analytics Button */
+.analytics-button-container {
+  grid-area: analytics;
+  text-align: center;
+  margin: 0;
+}
+
+.analytics-btn {
+  background: linear-gradient(135deg, #646cff 0%, #5558d8 100%);
+  color: white;
+  border: none;
+  padding: 0.875em 2.5em;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(100, 108, 255, 0.3);
+}
+
+.analytics-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 108, 255, 0.4);
+}
+
+.analytics-btn:active {
+  transform: translateY(0);
+}
+
+/* Quick Stats Section */
+.quick-stats {
+  grid-area: quickstats;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
+  margin: 0;
+}
+
+.quick-stat {
+  background: white;
+  padding: 1em;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-stat h4 {
+  margin: 0 0 0.5em 0;
+  font-size: 0.75em;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.quick-stat p {
+  margin: 0;
+  font-size: 1.375em;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+/* Latest Transactions */
+.latest-transactions {
+  grid-area: transactions;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5em;
+}
+
+.transactions-column {
+  display: flex;
+}
+
+.latest-card {
+  background: white;
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #10b981;
+  width: 100%;
+}
+
+.latest-card.expense {
+  border-left-color: #ef4444;
+}
+
+.latest-card h3 {
+  color: #1f2937;
+  margin-top: 0;
+  margin-bottom: 1em;
+  font-size: 1em;
+}
+
+.latest-content p {
+  margin: 0.5em 0;
+}
+
+.latest-content p strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.latest-content .amount {
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.75em 0;
+}
+
+.latest-content .amount.income-color {
+  color: #10b981;
+}
+
+.latest-content .amount.expense-color {
+  color: #ef4444;
+}
+
+.latest-content .meta {
+  color: #9ca3af;
+  font-size: 0.9em;
+  margin-top: 0.75em;
+}
+
+.empty-state {
+  background: white;
+  padding: 3em 1em;
+  border-radius: 8px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 1.1em;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75em;
+  }
+
+  .latest-transactions {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stack header on mobile */
+  .dashboard-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dashboard-header h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+}
+
+.summary-card {
+  padding: 1.5em;
+}
+
+.summary-card h3 {
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+.summary-content p {
+  font-size: 0.9em;
+}
