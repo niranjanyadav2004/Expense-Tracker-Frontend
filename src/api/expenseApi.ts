@@ -18,11 +18,11 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`);
+    console.log(`[EXPENSE API] ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },
   (error) => {
-    console.error('[API Request Error]', error);
+    console.error('[EXPENSE API Request Error]', error);
     return Promise.reject(error);
   }
 );
@@ -30,11 +30,11 @@ api.interceptors.request.use(
 // Add response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API] Response received from ${response.config.url}`);
+    console.log(`[EXPENSE API] Response received from ${response.config.url}`);
     return response.data;
   },
   (error) => {
-    console.error('[API Error]', {
+    console.error('[EXPENSE API Error]', {
       message: error.message,
       response: error.response?.status,
       data: error.response?.data,
@@ -45,19 +45,28 @@ api.interceptors.response.use(
 
 // Expense APIs
 export const expenseApi = {
-  create: (data: ExpenseFormData) =>
+  // Create a new expense entry
+  create: (data: ExpenseFormData): Promise<Expense> =>
     api.post('/expense', data),
-  
-  getAll: () =>
+
+  // Get all expense entries
+  getAll: (): Promise<Expense[]> =>
     api.get('/expense/all'),
-  
-  getById: (id: string | number) =>
+
+  // Get expense by ID
+  getById: (id: string | number): Promise<Expense> =>
     api.get(`/expense/${id}`),
-  
-  update: (id: string | number, data: ExpenseFormData) =>
+
+  // Get all expense entries for a specific bank
+  getByBank: (bankName: string): Promise<Expense[]> =>
+    api.get(`/expense/all/${bankName}`),
+
+  // Update expense entry
+  update: (id: string | number, data: ExpenseFormData): Promise<Expense> =>
     api.put(`/expense/${id}`, data),
-  
-  delete: (id: string | number) =>
+
+  // Delete expense entry
+  delete: (id: string | number): Promise<void> =>
     api.delete(`/expense/${id}`),
 };
 

@@ -26,7 +26,12 @@ export const IncomeList = ({ incomes, onEdit, onDelete, isLoading = false }: Inc
         {incomeList.map(income => (
           <div key={income.id} className="income-item">
             <div className="income-header">
-              <h4>{income.title}</h4>
+              <div className="header-title-section">
+                <h4>{income.title}</h4>
+                {income.bankName && (
+                  <span className="bank-indicator">🏦 {income.bankName}</span>
+                )}
+              </div>
               <span className="income-amount">₹{income.amount.toFixed(2)}</span>
             </div>
             <p className="income-description">{income.description}</p>

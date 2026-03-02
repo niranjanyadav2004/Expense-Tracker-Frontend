@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Expense, ExpenseFormData } from '../types';
+import { Expense, ExpenseFormData, BankAccount } from '../types';
+import { bankApi } from '../api/bankApi';
 import './ExpenseForm.css';
 
 interface ExpenseFormProps {
@@ -15,7 +16,36 @@ export const ExpenseForm = ({ onSubmit, initialData, isLoading = false }: Expens
     category: '',
     date: '',
     amount: '',
+    bankName: '',
   });
+
+  const [banks, setBanks] = useState<BankAccount[]>([]);
+  const [banksLoading, setBanksLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch available banks on mount
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        setBanksLoading(true);
+        const bankList = await bankApi.getUser();
+        setBanks(bankList);
+        if (bankList.length > 0 && !formData.bankName) {
+          setFormData(prev => ({
+            ...prev,
+            bankName: bankList[0].bankName,
+          }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch banks:', err);
+        setError('Failed to load bank accounts. Please try again.');
+      } finally {
+        setBanksLoading(false);
+      }
+    };
+
+    fetchBanks();
+  }, []);
 
   useEffect(() => {
     if (initialData) {
@@ -25,6 +55,7 @@ export const ExpenseForm = ({ onSubmit, initialData, isLoading = false }: Expens
         category: initialData.category,
         date: initialData.date,
         amount: initialData.amount,
+        bankName: initialData.bankName || '',
       });
     }
   }, [initialData]);
@@ -39,6 +70,10 @@ export const ExpenseForm = ({ onSubmit, initialData, isLoading = false }: Expens
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.bankName) {
+      setError('Please select a bank account');
+      return;
+    }
     await onSubmit(formData);
     if (!initialData) {
       setFormData({
@@ -47,12 +82,46 @@ export const ExpenseForm = ({ onSubmit, initialData, isLoading = false }: Expens
         category: '',
         date: '',
         amount: '',
+        bankName: banks.length > 0 ? banks[0].bankName : '',
       });
     }
   };
 
+  if (banksLoading) {
+    return <div className="expense-form loading">Loading bank accounts...</div>;
+  }
+
+  if (banks.length === 0) {
+    return (
+      <div className="expense-form error-message">
+        <p>No bank accounts available. Please create a bank account first.</p>
+      </div>
+    );
+  }
+
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
+      {error && <div className="error-message">{error}</div>}
+
+      <div className="form-group">
+        <label htmlFor="bankName">Bank Account</label>
+        <select
+          id="bankName"
+          name="bankName"
+          value={formData.bankName}
+          onChange={handleChange}
+          required
+          disabled={isLoading || banksLoading}
+        >
+          <option value="">Select a bank account</option>
+          {banks.map(bank => (
+            <option key={bank.id} value={bank.bankName}>
+              {bank.bankName} - {bank.accountNumber} (Balance: ₹{bank.balance.toFixed(2)})
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="form-group">
         <label htmlFor="title">Title</label>
         <input

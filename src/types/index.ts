@@ -1,3 +1,18 @@
+// Bank Account Types
+export interface BankAccount {
+  id: string;
+  bankName: string;
+  accountNumber: string;
+  balance: number;
+  accountHolder: string;
+}
+
+export interface BankFormData {
+  bankName: string;
+  accountNumber: string;
+}
+
+// Expense Types
 export interface Expense {
   id: number;
   title: string;
@@ -5,6 +20,27 @@ export interface Expense {
   category: string;
   date: string;
   amount: number;
+  bankName?: string;
+}
+
+export interface ExpenseFormData {
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  amount: number | string;
+  bankName: string;
+}
+
+// Income Types
+export interface IncomeDTO {
+  id: number;
+  title: string;
+  amount: number;
+  date: string;
+  category: string;
+  description: string;
+  bankName: string;
 }
 
 export interface Income {
@@ -14,8 +50,20 @@ export interface Income {
   date: string;
   category: string;
   description: string;
+  bankName?: string;
+  incomeDTO?: IncomeDTO;
 }
 
+export interface IncomeFormData {
+  title: string;
+  amount: number | string;
+  date: string;
+  category: string;
+  description: string;
+  bankName: string;
+}
+
+// Stats Types
 export interface Stats {
   income: number;
   expense: number;
@@ -26,22 +74,6 @@ export interface Stats {
   maxIncome: number;
   minExpense: number;
   maxExpense: number;
-}
-
-export interface ExpenseFormData {
-  title: string;
-  description: string;
-  category: string;
-  date: string;
-  amount: number | string;
-}
-
-export interface IncomeFormData {
-  title: string;
-  amount: number | string;
-  date: string;
-  category: string;
-  description: string;
 }
 
 // Auth Types

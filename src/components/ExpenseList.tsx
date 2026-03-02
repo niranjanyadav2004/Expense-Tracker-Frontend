@@ -26,7 +26,12 @@ export const ExpenseList = ({ expenses, onEdit, onDelete, isLoading = false }: E
         {expenseList.map(expense => (
           <div key={expense.id} className="expense-item">
             <div className="expense-header">
-              <h4>{expense.title}</h4>
+              <div className="header-title-section">
+                <h4>{expense.title}</h4>
+                {expense.bankName && (
+                  <span className="bank-indicator">🏦 {expense.bankName}</span>
+                )}
+              </div>
               <span className="expense-amount">₹{expense.amount.toFixed(2)}</span>
             </div>
             <p className="expense-description">{expense.description}</p>

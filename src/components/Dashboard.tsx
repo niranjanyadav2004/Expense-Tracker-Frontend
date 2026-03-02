@@ -1,7 +1,11 @@
-import { useState } from 'react';
-import { Stats, Expense, Income } from '../types';
+import { useState, useEffect } from 'react';
+import { Stats, Expense, Income, BankAccount } from '../types';
 import { Analytics } from './Analytics';
 import { ActivityCalendar } from './ActivityCalendar';
+import { bankApi } from '../api/bankApi';
+import { statsApi } from '../api/statsApi';
+import { expenseApi } from '../api/expenseApi';
+import { incomeApi } from '../api/incomeApi';
 import './Dashboard.css';
 
 interface DashboardProps {
@@ -13,15 +17,72 @@ interface DashboardProps {
 
 export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProps) => {
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [banks, setBanks] = useState<BankAccount[]>([]);
+  const [selectedBank, setSelectedBank] = useState<string>('overall');
+  const [bankStats, setBankStats] = useState<Stats | null>(null);
+  const [banksLoading, setBanksLoading] = useState(true);
+  const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
+  const [filteredIncomes, setFilteredIncomes] = useState<Income[]>([]);
+  const [transLoading, setTransLoading] = useState(false);
 
-  if (isLoading || !stats) {
+  // Fetch banks on mount
+  useEffect(() => {
+    const fetchBanks = async () => {
+      try {
+        setBanksLoading(true);
+        const bankList = await bankApi.getUser();
+        setBanks(bankList);
+      } catch (err) {
+        console.error('Failed to fetch banks:', err);
+      } finally {
+        setBanksLoading(false);
+      }
+    };
+
+    fetchBanks();
+  }, []);
+
+  // Load bank-specific stats and transactions when bank selection changes
+  useEffect(() => {
+    const fetchBankData = async () => {
+      if (selectedBank === 'overall') {
+        setBankStats(stats);
+        setFilteredExpenses(expenses);
+        setFilteredIncomes(incomes);
+        return;
+      }
+
+      try {
+        setTransLoading(true);
+        const [bankStatsData, bankExpensesData, bankIncomesData] = await Promise.all([
+          statsApi.getBankStats(selectedBank),
+          expenseApi.getByBank(selectedBank),
+          incomeApi.getByBank(selectedBank),
+        ]);
+        setBankStats(bankStatsData);
+        setFilteredExpenses(Array.isArray(bankExpensesData) ? bankExpensesData : []);
+        setFilteredIncomes(Array.isArray(bankIncomesData) ? bankIncomesData : []);
+      } catch (err) {
+        console.error('Failed to fetch bank data:', err);
+        setBankStats(null);
+        setFilteredExpenses([]);
+        setFilteredIncomes([]);
+      } finally {
+        setTransLoading(false);
+      }
+    };
+
+    fetchBankData();
+  }, [selectedBank, stats, expenses, incomes]);
+
+  if (isLoading || !stats || !bankStats) {
     return <div className="empty-state">Loading statistics...</div>;
   }
 
   // Calculate percentages for visualization
-  const totalIncome = stats?.income || 0;
-  const totalExpense = stats?.expense || 0;
-  const balance = stats?.balance || 0;
+  const totalIncome = bankStats?.income || 0;
+  const totalExpense = bankStats?.expense || 0;
+  const balance = bankStats?.balance || 0;
   const expensePercentage = totalIncome > 0 ? (totalExpense / totalIncome) * 100 : 0;
   const savingsPercentage = totalIncome > 0 ? (balance / totalIncome) * 100 : 0;
 
@@ -30,10 +91,28 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
       {/* Dashboard Header with Calendar */}
       <div className="dashboard-header">
         <h1>Dashboard</h1>
+        {!banksLoading && banks.length > 0 && (
+          <div className="bank-filter">
+            <label htmlFor="bank-select">View by Bank:</label>
+            <select
+              id="bank-select"
+              value={selectedBank}
+              onChange={(e) => setSelectedBank(e.target.value)}
+              className="bank-select"
+            >
+              <option value="overall">Overall</option>
+              {banks.map(bank => (
+                <option key={bank.id} value={bank.bankName}>
+                  {bank.bankName} - {bank.accountNumber}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
 
       {/* Calendar positioned on the right via grid */}
-      <ActivityCalendar expenses={expenses} incomes={incomes} />
+      <ActivityCalendar expenses={filteredExpenses} incomes={filteredIncomes} />
 
       {/* Main Stats Cards */}
       <div className="stats-grid">
@@ -66,26 +145,32 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
       {/* Latest Transactions Summary */}
       <div className="latest-transactions">
         <div className="transactions-column">
-          {stats?.latestIncome && (
+          {bankStats?.latestIncome && (
             <div className="latest-card">
               <h3>Latest Income</h3>
               <div className="latest-content">
-                <p><strong>{stats.latestIncome.title}</strong></p>
-                <p className="amount income-color">+₹{stats.latestIncome.amount.toFixed(2)}</p>
-                <p className="meta">{stats.latestIncome.category} • {new Date(stats.latestIncome.date).toLocaleDateString()}</p>
+                <p><strong>{bankStats.latestIncome.title}</strong></p>
+                <p className="amount income-color">+₹{bankStats.latestIncome.amount.toFixed(2)}</p>
+                <p className="meta">{bankStats.latestIncome.category} • {new Date(bankStats.latestIncome.date).toLocaleDateString()}</p>
+                {bankStats.latestIncome.bankName && (
+                  <p className="bank-info">📊 {bankStats.latestIncome.bankName}</p>
+                )}
               </div>
             </div>
           )}
         </div>
 
         <div className="transactions-column">
-          {stats?.lastestExpense && (
+          {bankStats?.lastestExpense && (
             <div className="latest-card">
               <h3>Latest Expense</h3>
               <div className="latest-content">
-                <p><strong>{stats.lastestExpense.title}</strong></p>
-                <p className="amount expense-color">-₹{stats.lastestExpense.amount.toFixed(2)}</p>
-                <p className="meta">{stats.lastestExpense.category} • {new Date(stats.lastestExpense.date).toLocaleDateString()}</p>
+                <p><strong>{bankStats.lastestExpense.title}</strong></p>
+                <p className="amount expense-color">-₹{bankStats.lastestExpense.amount.toFixed(2)}</p>
+                <p className="meta">{bankStats.lastestExpense.category} • {new Date(bankStats.lastestExpense.date).toLocaleDateString()}</p>
+                {bankStats.lastestExpense.bankName && (
+                  <p className="bank-info">📊 {bankStats.lastestExpense.bankName}</p>
+                )}
               </div>
             </div>
           )}
@@ -109,7 +194,7 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
       </div>
 
       {/* Analytics Modal */}
-      {showAnalytics && <Analytics stats={stats} onClose={() => setShowAnalytics(false)} />}
+      {showAnalytics && <Analytics stats={bankStats || stats} onClose={() => setShowAnalytics(false)} />}
     </div>
   );
 };

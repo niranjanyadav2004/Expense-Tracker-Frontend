@@ -4,6 +4,7 @@ import { Landing } from './components/Landing';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
 import { Profile } from './components/Profile';
+import { BankManagement } from './components/BankManagement';
 import { ConfirmationModal } from './components/ConfirmationModal';
 import { ExpenseForm } from './components/ExpenseForm';
 import { ExpenseList } from './components/ExpenseList';
@@ -11,7 +12,8 @@ import { IncomeForm } from './components/IncomeForm';
 import { IncomeList } from './components/IncomeList';
 import { Dashboard } from './components/Dashboard';
 import { expenseApi } from './api/expenseApi';
-import { incomeApi, statsApi } from './api/incomeApi';
+import { incomeApi } from './api/incomeApi';
+import { statsApi } from './api/statsApi';
 import { authApi } from './api/authApi';
 import { Expense, Income, Stats, ExpenseFormData, IncomeFormData, AuthUser } from './types';
 import './App.css';
@@ -57,7 +59,7 @@ function App() {
       const [expensesData, incomesData, statsData] = await Promise.all([
         expenseApi.getAll(),
         incomeApi.getAll(),
-        statsApi.getStats(),
+        statsApi.getOverallStats(),
       ]);
       setExpenses(Array.isArray(expensesData) ? expensesData : []);
       setIncomes(Array.isArray(incomesData) ? incomesData : []);
@@ -305,6 +307,12 @@ function App() {
                     />
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'banks' && (
+              <div className="tab-content">
+                <BankManagement />
               </div>
             )}
 

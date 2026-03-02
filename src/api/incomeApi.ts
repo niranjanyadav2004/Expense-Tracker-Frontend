@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Income, IncomeFormData, Stats } from '../types';
+import { Income, IncomeFormData } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
@@ -18,11 +18,11 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`);
+    console.log(`[INCOME API] ${config.method?.toUpperCase()} ${config.url}`);
     return config;
   },
   (error) => {
-    console.error('[API Request Error]', error);
+    console.error('[INCOME API Request Error]', error);
     return Promise.reject(error);
   }
 );
@@ -30,11 +30,11 @@ api.interceptors.request.use(
 // Add response interceptor for error handling
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API] Response received from ${response.config.url}`);
+    console.log(`[INCOME API] Response received from ${response.config.url}`);
     return response.data;
   },
   (error) => {
-    console.error('[API Error]', {
+    console.error('[INCOME API Error]', {
       message: error.message,
       response: error.response?.status,
       data: error.response?.data,
@@ -45,26 +45,29 @@ api.interceptors.response.use(
 
 // Income APIs
 export const incomeApi = {
-  create: (data: IncomeFormData) =>
+  // Create a new income entry
+  create: (data: IncomeFormData): Promise<Income> =>
     api.post('/income', data),
-  
-  getAll: () =>
-    api.get('/income/all'),
-  
-  getById: (id: string | number) =>
-    api.get(`/income/${id}`),
-  
-  update: (id: string | number, data: IncomeFormData) =>
-    api.put(`/income/${id}`, data),
-  
-  delete: (id: string | number) =>
-    api.delete(`/income/${id}`),
-};
 
-// Stats API
-export const statsApi = {
-  getStats: () =>
-    api.get('/stats'),
+  // Get all income entries
+  getAll: (): Promise<Income[]> =>
+    api.get('/income/all'),
+
+  // Get income by ID
+  getById: (id: string | number): Promise<Income> =>
+    api.get(`/income/${id}`),
+
+  // Get all income entries for a specific bank
+  getByBank: (bankName: string): Promise<Income[]> =>
+    api.get(`/income/all/${bankName}`),
+
+  // Update income entry
+  update: (id: string | number, data: IncomeFormData): Promise<Income> =>
+    api.put(`/income/${id}`, data),
+
+  // Delete income entry
+  delete: (id: string | number): Promise<void> =>
+    api.delete(`/income/${id}`),
 };
 
 export default api;
