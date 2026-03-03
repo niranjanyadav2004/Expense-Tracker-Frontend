@@ -312,7 +312,7 @@ function App() {
 
             {activeTab === 'banks' && (
               <div className="tab-content">
-                <BankManagement />
+                <BankManagement onBankDeleted={fetchAllData} />
               </div>
             )}
 

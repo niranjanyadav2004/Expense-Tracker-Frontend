@@ -7,6 +7,7 @@ interface ConfirmationModalProps {
   confirmText?: string;
   cancelText?: string;
   isDangerous?: boolean;
+  isLoading?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -18,6 +19,7 @@ export const ConfirmationModal = ({
   confirmText = 'Confirm',
   cancelText = 'Cancel',
   isDangerous = false,
+  isLoading = false,
   onConfirm,
   onCancel,
 }: ConfirmationModalProps) => {
@@ -36,8 +38,9 @@ export const ConfirmationModal = ({
           <button
             className={`btn-confirm ${isDangerous ? 'btn-danger' : 'btn-primary'}`}
             onClick={onConfirm}
+            disabled={isLoading}
           >
-            {confirmText}
+            {isLoading ? 'Processing...' : confirmText}
           </button>
           <button className="btn-cancel" onClick={onCancel}>
             {cancelText}

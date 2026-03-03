@@ -28,6 +28,26 @@
   font-family: inherit;
   background-color: var(--input-bg);
   color: var(--text-primary);
+  box-sizing: border-box;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23646cff' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75em center;
+  background-size: 1.2em;
+  padding-right: 2.5em;
+}
+
+.form-group select {
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.form-group select option {
+  padding: 0.5em;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .form-group input:focus,
@@ -95,7 +115,13 @@
   .form-group textarea,
   .form-group select {
     padding: 0.6em;
-    font-size: 0.9em;
+    padding-right: 2.2em;
+    font-size: 0.95em;
+  }
+
+  .form-group select {
+    background-size: 1em;
+    background-position: right 0.6em center;
   }
 
   .expense-form button {
@@ -123,7 +149,13 @@
   .form-group textarea,
   .form-group select {
     padding: 0.5em;
+    padding-right: 2em;
     font-size: 0.85em;
+  }
+
+  .form-group select {
+    background-size: 0.9em;
+    background-position: right 0.5em center;
   }
 
   .expense-form button {

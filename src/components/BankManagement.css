@@ -28,22 +28,27 @@
 
 .btn-primary {
   padding: 0.75rem 1.5rem;
-  background: var(--primary-color);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
 }
 
 .btn-primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-secondary {
@@ -201,24 +206,37 @@
 }
 
 .bank-balance {
-  background: var(--primary-color);
-  padding: 1rem;
-  border-radius: 6px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  padding: 1.5rem;
+  border-radius: 10px;
   margin-bottom: 1.5rem;
   text-align: center;
   color: white;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .balance-label {
   margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.9;
+  font-size: 0.85rem;
+  opacity: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .balance-amount {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: bold;
+  margin: 0.75rem 0 0 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .bank-actions {
@@ -271,6 +289,11 @@
 [data-theme='dark'] .bank-card {
   background: #1e1e1e;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .bank-balance {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  color: white;
 }
 
 @media (max-width: 768px) {

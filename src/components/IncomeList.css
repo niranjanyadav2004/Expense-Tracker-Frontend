@@ -64,19 +64,13 @@
   font-weight: 600;
   width: fit-content;
 }
-  flex-wrap: wrap;
-  gap: 0.5em;
-}
-
-.income-header h4 {
-  margin: 0;
-  color: var(--text-primary);
-}
 
 .income-amount {
-  font-size: 1.2em;
-  font-weight: 700;
-  color: #10b981;
+  font-size: 1.3em;
+  font-weight: 900;
+  color: #059669;
+  text-shadow: 0 1px 3px rgba(5, 150, 105, 0.15);
+  letter-spacing: 0.3px;
 }
 
 .income-description {

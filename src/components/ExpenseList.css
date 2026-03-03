@@ -64,19 +64,13 @@
   font-weight: 600;
   width: fit-content;
 }
-  flex-wrap: wrap;
-  gap: 0.5em;
-}
-
-.expense-header h4 {
-  margin: 0;
-  color: var(--text-primary);
-}
 
 .expense-amount {
-  font-size: 1.2em;
-  font-weight: 700;
-  color: #fca5a5;
+  font-size: 1.3em;
+  font-weight: 900;
+  color: #dc2626;
+  text-shadow: 0 1px 3px rgba(220, 38, 38, 0.15);
+  letter-spacing: 0.3px;
 }
 
 .expense-description {

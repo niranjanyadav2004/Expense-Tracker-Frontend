@@ -4,7 +4,11 @@ import { bankApi } from '../api/bankApi';
 import { ConfirmationModal } from './ConfirmationModal';
 import './BankManagement.css';
 
-export const BankManagement = () => {
+interface BankManagementProps {
+  onBankDeleted?: () => void;
+}
+
+export const BankManagement = ({ onBankDeleted }: BankManagementProps) => {
   const [banks, setBanks] = useState<BankAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,8 +84,13 @@ export const BankManagement = () => {
 
     try {
       if (editingBank) {
-        // Update existing bank
-        await bankApi.update(editingBank.id, formData);
+        // Update existing bank - include current balance so it doesn't change
+        const updateData: BankFormData = {
+          bankName: formData.bankName,
+          accountNumber: formData.accountNumber,
+          balance: editingBank.balance, // Send current balance to backend
+        };
+        await bankApi.update(editingBank.id, updateData);
         setSuccess('Bank account updated successfully');
       } else {
         // Create new bank
@@ -113,6 +122,11 @@ export const BankManagement = () => {
       setSuccess('Bank account deleted successfully');
       setDeleteConfirm(null);
       await fetchBanks();
+      
+      // Trigger parent to refresh transaction data
+      if (onBankDeleted) {
+        onBankDeleted();
+      }
     } catch (err) {
       console.error('Failed to delete bank:', err);
       setError('Failed to delete bank account. Please try again.');
@@ -237,6 +251,7 @@ export const BankManagement = () => {
         isLoading={formLoading}
         confirmText="Delete"
         cancelText="Cancel"
+        isDangerous={true}
       />
     </div>
   );

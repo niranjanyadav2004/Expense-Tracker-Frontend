@@ -10,6 +10,7 @@ export interface BankAccount {
 export interface BankFormData {
   bankName: string;
   accountNumber: string;
+  balance?: number;
 }
 
 // Expense Types
