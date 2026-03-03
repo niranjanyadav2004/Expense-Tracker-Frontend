@@ -240,9 +240,7 @@ function App() {
 
   return (
     <div className="app">
-      {appInitializing ? (
-        <div className="loading-message">Initializing...</div>
-      ) : isAuthenticated ? (
+      {isAuthenticated ? (
         <>
           <Navigation
             activeTab={activeTab}
