@@ -1,0 +1,261 @@
+.transfer-list-container {
+  background: var(--card-bg);
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--card-shadow);
+}
+
+.transfer-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid var(--border-primary);
+}
+
+.transfer-list-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.2em;
+}
+
+.refresh-btn {
+  display: none;
+}
+
+.refresh-btn-hidden {
+  display: none;
+}
+
+.transfer-list-content {
+  display: grid;
+  gap: 1em;
+  margin-bottom: 1.5em;
+}
+
+.transfer-card {
+  border: 1px solid var(--border-primary);
+  border-radius: 6px;
+  padding: 1em;
+  transition: box-shadow 0.3s;
+  background: var(--bg-secondary);
+}
+
+.transfer-card:hover {
+  box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+.transfer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.8em;
+  gap: 1em;
+}
+
+.transfer-route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bank-badge {
+  display: inline-block;
+  padding: 0.35em 0.75em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.from-badge {
+  background: rgba(220, 38, 38, 0.35);
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.to-badge {
+  background: rgba(5, 150, 105, 0.35);
+  color: #059669;
+  font-weight: 700;
+}
+
+.transfer-arrow {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.transfer-amount {
+  font-size: 1.3em;
+  font-weight: 900;
+  color: #a855f7;
+  text-shadow: 0 1px 3px rgba(168, 85, 247, 0.15);
+  letter-spacing: 0.3px;
+}
+
+.transfer-card-body {
+  margin-top: 0.75em;
+}
+
+.transfer-description {
+  margin: 0;
+  color: var(--text-secondary);
+  margin-bottom: 0.5em;
+  font-size: 0.95em;
+}
+
+.transfer-meta {
+  display: flex;
+  gap: 1em;
+  font-size: 0.85em;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+
+.transfer-date {
+  font-weight: 500;
+}
+
+.transfer-id {
+  opacity: 0.7;
+}
+
+.transfer-divider {
+  display: none;
+}
+
+.transfer-list-footer {
+  display: none;
+}
+
+.total-transfers {
+  display: none;
+}
+
+.transfer-list-loading {
+  text-align: center;
+  padding: 2em;
+  color: var(--text-secondary);
+  font-size: 1em;
+}
+
+.transfer-list-empty {
+  text-align: center;
+  padding: 3em 1em;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1em;
+  opacity: 0.5;
+}
+
+.transfer-list-empty p {
+  font-size: 1rem;
+  margin: 0 0 0.5em 0;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.transfer-list-empty small {
+  display: block;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-bottom: 1em;
+}
+
+.refresh-btn-empty {
+  background-color: #a855f7;
+  color: white;
+  border: none;
+  padding: 0.5em 1.25em;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.2s;
+}
+
+.refresh-btn-empty:hover {
+  background-color: #9333ea;
+  transform: translateY(-2px);
+}
+
+.transfer-actions {
+  display: flex;
+  gap: 0.5em;
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid var(--border-primary);
+}
+
+.transfer-actions .btn-edit,
+.transfer-actions .btn-delete {
+  flex: 1;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.25s;
+  font-size: 0.9em;
+}
+
+.transfer-actions .btn-edit {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.transfer-actions .btn-edit:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+}
+
+.transfer-actions .btn-delete {
+  background-color: var(--btn-danger-bg);
+  color: white;
+}
+
+.transfer-actions .btn-delete:hover:not(:disabled) {
+  background-color: var(--btn-danger-hover);
+  transform: translateY(-2px);
+}
+
+.transfer-actions .btn-edit:disabled,
+.transfer-actions .btn-delete:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .transfer-list-container {
+    padding: 1.25em;
+  }
+}
+
+@media (max-width: 768px) {
+  .transfer-list-container {
+    padding: 1em;
+  }
+
+  .transfer-list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+
+  .refresh-btn {
+    align-self: flex-end;
+  }
+
+  .transfer-card-header {
+    flex-direction: column;
+  }
+
+  .transfer-amount {
+    font-size: 1.1em;
+  }
+}

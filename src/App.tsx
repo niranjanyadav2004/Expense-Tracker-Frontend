@@ -10,23 +10,30 @@ import { ExpenseForm } from './components/ExpenseForm';
 import { ExpenseList } from './components/ExpenseList';
 import { IncomeForm } from './components/IncomeForm';
 import { IncomeList } from './components/IncomeList';
+import { TransferForm } from './components/TransferForm';
+import { TransferList } from './components/TransferList';
 import { Dashboard } from './components/Dashboard';
 import { expenseApi } from './api/expenseApi';
 import { incomeApi } from './api/incomeApi';
 import { statsApi } from './api/statsApi';
+import { transferApi } from './api/transferApi';
+import { bankApi } from './api/bankApi';
 import { authApi } from './api/authApi';
-import { Expense, Income, Stats, ExpenseFormData, IncomeFormData, AuthUser } from './types';
+import { Expense, Income, Stats, ExpenseFormData, IncomeFormData, Transfer, TransferFormData, AuthUser } from './types';
 import './App.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [incomes, setIncomes] = useState<Income[]>([]);
+  const [transfers, setTransfers] = useState<Transfer[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [banks, setBanks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [editingIncome, setEditingIncome] = useState<Income | null>(null);
+  const [editingTransfer, setEditingTransfer] = useState<Transfer | null>(null);
   
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -56,13 +63,17 @@ function App() {
     setLoading(true);
     setError('');
     try {
-      const [expensesData, incomesData, statsData] = await Promise.all([
+      const [expensesData, incomesData, statsData, transfersData, banksData] = await Promise.all([
         expenseApi.getAll(),
         incomeApi.getAll(),
         statsApi.getOverallStats(),
+        transferApi.getAll(),
+        bankApi.getUser(),
       ]);
       setExpenses(Array.isArray(expensesData) ? expensesData : []);
       setIncomes(Array.isArray(incomesData) ? incomesData : []);
+      setTransfers(Array.isArray(transfersData) ? transfersData : []);
+      setBanks(Array.isArray(banksData) ? banksData : []);
       setStats((statsData as unknown as Stats) || null);
     } catch (err: any) {
       const errorMsg = err?.response?.status === 0 
@@ -71,6 +82,8 @@ function App() {
       setError(errorMsg);
       setExpenses([]);
       setIncomes([]);
+      setTransfers([]);
+      setBanks([]);
       setStats(null);
     } finally {
       setLoading(false);
@@ -162,6 +175,59 @@ function App() {
     }
   };
 
+  const handleAddTransfer = async (data: TransferFormData) => {
+    setLoading(true);
+    setError('');
+    try {
+      await transferApi.create(data);
+      await fetchAllData();
+    } catch (err) {
+      setError('Failed to transfer money');
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateTransfer = async (data: TransferFormData) => {
+    if (!editingTransfer) return;
+    setLoading(true);
+    setError('');
+    try {
+      await transferApi.update(editingTransfer.id, data);
+      setEditingTransfer(null);
+      await fetchAllData();
+    } catch (err) {
+      setError('Failed to update transfer');
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteTransfer = async (id: number) => {
+    setPendingDeletion({ id, type: 'income' });
+    setConfirmationModal({
+      isOpen: true,
+      title: 'Delete Transfer',
+      message: 'Are you sure you want to delete this transfer record? This action cannot be undone.',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      isDangerous: true,
+      onConfirm: async () => {
+        setLoading(true);
+        setError('');
+        try {
+          await transferApi.delete(id);
+          await fetchAllData();
+          setConfirmationModal(prev => ({ ...prev, isOpen: false }));
+          setPendingDeletion(null);
+        } catch (err) {
+          setError('Failed to delete transfer');
+          setLoading(false);
+          setConfirmationModal(prev => ({ ...prev, isOpen: false }));
+          setPendingDeletion(null);
+        }
+      },
+    });
+  };
+
   const handleUpdateIncome = async (data: IncomeFormData) => {
     if (!editingIncome) return;
     setLoading(true);
@@ -230,6 +296,8 @@ function App() {
         setAuthUser(null);
         setExpenses([]);
         setIncomes([]);
+        setTransfers([]);
+        setBanks([]);
         setStats(null);
         setActiveTab('dashboard');
         setShowLanding(true);
@@ -257,7 +325,7 @@ function App() {
             )}
 
             {activeTab === 'dashboard' && (
-              <Dashboard stats={stats} isLoading={loading} expenses={expenses} incomes={incomes} />
+              <Dashboard stats={stats} isLoading={loading} expenses={expenses} incomes={incomes} banks={banks} transfers={transfers} />
             )}
 
             {activeTab === 'expenses' && (
@@ -302,6 +370,32 @@ function App() {
                       onEdit={setEditingIncome}
                       onDelete={handleDeleteIncome}
                       isLoading={loading}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'transfers' && (
+              <div className="tab-content">
+                <div className="form-list-wrapper">
+                  <div className="form-section">
+                    <h2>{editingTransfer ? 'Edit Transfer' : 'Send Money'}</h2>
+                    <TransferForm
+                      onSubmit={editingTransfer ? handleUpdateTransfer : handleAddTransfer}
+                      initialTransfer={editingTransfer || undefined}
+                      isEditMode={!!editingTransfer}
+                      onCancel={() => setEditingTransfer(null)}
+                      isLoading={loading}
+                    />
+                  </div>
+                  <div className="list-section">
+                    <TransferList
+                      transfers={transfers}
+                      isLoading={loading}
+                      onRefresh={fetchAllData}
+                      onEdit={setEditingTransfer}
+                      onDelete={handleDeleteTransfer}
                     />
                   </div>
                 </div>

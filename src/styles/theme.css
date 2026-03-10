@@ -45,6 +45,7 @@
   --input-border: #d1d5db;
   --input-focus-border: #646cff;
   --input-disabled-bg: #f3f4f6;
+  --input-calendar-icon-color: #6b7280;
   
   /* Modal Colors */
   --modal-bg: #ffffff;
@@ -59,6 +60,9 @@
   --stat-income-color: #10b981;
   --stat-expense-color: #ef4444;
   --stat-balance-color: #646cff;
+  
+  /* Balance Card Gradient */
+  --balance-gradient: linear-gradient(135deg, #646cff 0%, #4f46e5 100%);
   
   /* Landing Page Colors */
   --landing-hero-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -121,6 +125,7 @@
   --input-border: #4b5563;
   --input-focus-border: #646cff;
   --input-disabled-bg: #1f2937;
+  --input-calendar-icon-color: #d1d5db;
   
   /* Modal Colors */
   --modal-bg: #1f2937;
@@ -135,6 +140,10 @@
   --stat-income-color: #10b981;
   --stat-expense-color: #fca5a5;
   --stat-balance-color: #646cff;
+  
+  /* Balance Card Gradient */
+  --balance-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  
   --landing-hero-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
   --landing-hero-text: #f3f4f6;
   --landing-header-bg: rgba(31, 41, 55, 0.95);

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Stats, Expense, Income, BankAccount } from '../types';
+import { Stats, Expense, Income, BankAccount, Transfer } from '../types';
 import { Analytics } from './Analytics';
 import { ActivityCalendar } from './ActivityCalendar';
 import { bankApi } from '../api/bankApi';
 import { statsApi } from '../api/statsApi';
 import { expenseApi } from '../api/expenseApi';
 import { incomeApi } from '../api/incomeApi';
+import { transferApi } from '../api/transferApi';
 import './Dashboard.css';
 
 interface DashboardProps {
@@ -13,34 +14,27 @@ interface DashboardProps {
   isLoading: boolean;
   expenses: Expense[];
   incomes: Income[];
+  banks?: BankAccount[];
+  transfers?: Transfer[];
 }
 
-export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProps) => {
+export const Dashboard = ({ stats, isLoading, expenses, incomes, banks: banksProp = [], transfers: transfersProp = [] }: DashboardProps) => {
   const [showAnalytics, setShowAnalytics] = useState(false);
-  const [banks, setBanks] = useState<BankAccount[]>([]);
+  const [banks, setBanks] = useState<BankAccount[]>(banksProp);
+  const [transfers, setTransfers] = useState<Transfer[]>(transfersProp);
   const [selectedBank, setSelectedBank] = useState<string>('overall');
   const [bankStats, setBankStats] = useState<Stats | null>(null);
-  const [banksLoading, setBanksLoading] = useState(true);
+  const [banksLoading, setBanksLoading] = useState(false);
   const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>([]);
   const [filteredIncomes, setFilteredIncomes] = useState<Income[]>([]);
+  const [filteredTransfers, setFilteredTransfers] = useState<Transfer[]>([]);
   const [transLoading, setTransLoading] = useState(false);
 
-  // Fetch banks on mount
+  // Update banks and transfers when props change
   useEffect(() => {
-    const fetchBanks = async () => {
-      try {
-        setBanksLoading(true);
-        const bankList = await bankApi.getUser();
-        setBanks(bankList);
-      } catch (err) {
-        console.error('Failed to fetch banks:', err);
-      } finally {
-        setBanksLoading(false);
-      }
-    };
-
-    fetchBanks();
-  }, []);
+    setBanks(banksProp);
+    setTransfers(transfersProp);
+  }, [banksProp, transfersProp]);
 
   // Load bank-specific stats and transactions when bank selection changes
   useEffect(() => {
@@ -49,31 +43,45 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
         setBankStats(stats);
         setFilteredExpenses(expenses);
         setFilteredIncomes(incomes);
+        setFilteredTransfers(transfers);
         return;
       }
 
       try {
         setTransLoading(true);
-        const [bankStatsData, bankExpensesData, bankIncomesData] = await Promise.all([
+        const [bankStatsData, bankExpensesData, bankIncomesData, bankTransfersData] = await Promise.all([
           statsApi.getBankStats(selectedBank),
           expenseApi.getByBank(selectedBank),
           incomeApi.getByBank(selectedBank),
+          transferApi.getByBankName(selectedBank),
         ]);
-        setBankStats(bankStatsData);
+        
+        // Get actual bank account balance to reflect transfers
+        const selectedBankAccount = banks.find(b => b.bankName === selectedBank);
+        
+        // Merge stats with actual bank balance
+        const enhancedBankStats = {
+          ...bankStatsData,
+          balance: selectedBankAccount?.balance || bankStatsData.balance,
+        };
+        
+        setBankStats(enhancedBankStats);
         setFilteredExpenses(Array.isArray(bankExpensesData) ? bankExpensesData : []);
         setFilteredIncomes(Array.isArray(bankIncomesData) ? bankIncomesData : []);
+        setFilteredTransfers(Array.isArray(bankTransfersData) ? bankTransfersData : []);
       } catch (err) {
         console.error('Failed to fetch bank data:', err);
         setBankStats(null);
         setFilteredExpenses([]);
         setFilteredIncomes([]);
+        setFilteredTransfers([]);
       } finally {
         setTransLoading(false);
       }
     };
 
     fetchBankData();
-  }, [selectedBank, stats, expenses, incomes]);
+  }, [selectedBank, stats, expenses, incomes, banks, transfers]);
 
   if (isLoading || !stats || !bankStats) {
     return <div className="empty-state">Loading statistics...</div>;
@@ -83,6 +91,9 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
   const totalIncome = bankStats?.income || 0;
   const totalExpense = bankStats?.expense || 0;
   const balance = bankStats?.balance || 0;
+  const totalTransfers = selectedBank === 'overall' 
+    ? transfers.reduce((sum, t) => sum + t.amount, 0)
+    : filteredTransfers.reduce((sum, t) => sum + t.amount, 0);
   const expensePercentage = totalIncome > 0 ? (totalExpense / totalIncome) * 100 : 0;
   const savingsPercentage = totalIncome > 0 ? (balance / totalIncome) * 100 : 0;
 
@@ -112,7 +123,7 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
       </div>
 
       {/* Calendar positioned on the right via grid */}
-      <ActivityCalendar expenses={filteredExpenses} incomes={filteredIncomes} />
+      <ActivityCalendar expenses={filteredExpenses} incomes={filteredIncomes} transfers={filteredTransfers} />
 
       {/* Main Stats Cards */}
       <div className="stats-grid">
@@ -132,6 +143,12 @@ export const Dashboard = ({ stats, isLoading, expenses, incomes }: DashboardProp
           <h3>Balance</h3>
           <p className="stat-value">₹{(balance || 0).toFixed(2)}</p>
           <p className="stat-change">{savingsPercentage.toFixed(1)}% saved</p>
+        </div>
+
+        <div className="stat-card transfer">
+          <h3>Total Transfers</h3>
+          <p className="stat-value">₹{(totalTransfers || 0).toFixed(2)}</p>
+          <p className="stat-change">{selectedBank === 'overall' ? transfers.length : filteredTransfers.length} transfers</p>
         </div>
       </div>
 

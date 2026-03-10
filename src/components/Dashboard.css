@@ -220,6 +220,14 @@
   color: var(--stat-balance-color);
 }
 
+.stat-card.transfer {
+  border-top-color: #a855f7;
+}
+
+.stat-card.transfer .stat-value {
+  color: #a855f7;
+}
+
 /* Analytics Section - Removed for simpler dashboard */
 
 /* Analytics Button */

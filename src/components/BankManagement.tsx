@@ -13,6 +13,7 @@ export const BankManagement = ({ onBankDeleted }: BankManagementProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [successClosing, setSuccessClosing] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingBank, setEditingBank] = useState<BankAccount | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<BankAccount | null>(null);
@@ -28,6 +29,25 @@ export const BankManagement = ({ onBankDeleted }: BankManagementProps) => {
   useEffect(() => {
     fetchBanks();
   }, []);
+
+  // Auto-clear success message after 2.5 seconds with fade-out
+  useEffect(() => {
+    if (success) {
+      const fadeTimer = setTimeout(() => {
+        setSuccessClosing(true);
+      }, 2300); // Start fade-out 200ms before final clear
+      
+      const clearTimer = setTimeout(() => {
+        setSuccess(null);
+        setSuccessClosing(false);
+      }, 2500);
+      
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(clearTimer);
+      };
+    }
+  }, [success]);
 
   const fetchBanks = async () => {
     try {
@@ -149,7 +169,7 @@ export const BankManagement = ({ onBankDeleted }: BankManagementProps) => {
       </div>
 
       {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
+      {success && <div className={`success-message ${successClosing ? 'closing' : ''}`}>{success}</div>}
 
       {isFormOpen && (
         <div className="bank-form-container">

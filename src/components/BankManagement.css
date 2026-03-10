@@ -150,6 +150,12 @@
   border-radius: 4px;
   margin-bottom: 1.5rem;
   border-left: 4px solid #3c3;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.success-message.closing {
+  opacity: 0;
 }
 
 .no-banks {
@@ -206,7 +212,7 @@
 }
 
 .bank-balance {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  background: var(--balance-gradient);
   padding: 1.5rem;
   border-radius: 10px;
   margin-bottom: 1.5rem;

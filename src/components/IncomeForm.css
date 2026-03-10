@@ -60,6 +60,18 @@
   cursor: not-allowed;
 }
 
+/* Date input calendar icon styling */
+.income-form .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+  opacity: 0.8;
+}
+
+.dark-mode .income-form .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.9;
+}
+
 .income-form .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;

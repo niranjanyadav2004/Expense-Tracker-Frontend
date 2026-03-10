@@ -38,6 +38,12 @@ export const Navigation = ({ activeTab, onTabChange, user, onLogout }: Navigatio
               Income
             </button>
             <button
+              className={`nav-link ${activeTab === 'transfers' ? 'active' : ''}`}
+              onClick={() => onTabChange('transfers')}
+            >
+              Transfers
+            </button>
+            <button
               className={`nav-link ${activeTab === 'banks' ? 'active' : ''}`}
               onClick={() => onTabChange('banks')}
             >

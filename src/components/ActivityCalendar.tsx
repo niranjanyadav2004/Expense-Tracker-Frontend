@@ -1,10 +1,11 @@
 import { useState, useMemo } from 'react';
-import { Expense, Income } from '../types';
+import { Expense, Income, Transfer } from '../types';
 import './ActivityCalendar.css';
 
 interface ActivityCalendarProps {
   expenses: Expense[];
   incomes: Income[];
+  transfers?: Transfer[];
 }
 
 interface DayData {
@@ -16,7 +17,7 @@ interface DayData {
   transactions: number;
 }
 
-export const ActivityCalendar = ({ expenses, incomes }: ActivityCalendarProps) => {
+export const ActivityCalendar = ({ expenses, incomes, transfers = [] }: ActivityCalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
@@ -84,8 +85,17 @@ export const ActivityCalendar = ({ expenses, incomes }: ActivityCalendarProps) =
       }
     });
 
+    // Add transfers
+    transfers.forEach((transfer) => {
+      const dateStr = transfer.date.split('T')[0];
+      if (data[dateStr]) {
+        data[dateStr].hasTransaction = true;
+        data[dateStr].transactions += 1;
+      }
+    });
+
     return data;
-  }, [expenses, incomes, currentDate]);
+  }, [expenses, incomes, transfers, currentDate]);
 
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthName = currentDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
@@ -207,6 +217,11 @@ export const ActivityCalendar = ({ expenses, incomes }: ActivityCalendarProps) =
           {monthData[hoveredDate].expenseAmount > 0 && (
             <div className="tooltip-expense">
               💸 Expense: ₹{monthData[hoveredDate].expenseAmount.toFixed(2)}
+            </div>
+          )}
+          {monthData[hoveredDate].transactions > (monthData[hoveredDate].incomeAmount > 0 ? 1 : 0) + (monthData[hoveredDate].expenseAmount > 0 ? 1 : 0) && (
+            <div className="tooltip-transfer">
+              🔄 Transfer
             </div>
           )}
         </div>

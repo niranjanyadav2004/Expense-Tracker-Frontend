@@ -1,0 +1,192 @@
+.transfer-form-container {
+  width: 100%;
+}
+
+.transfer-form-google-pay {
+  background: var(--card-bg);
+  padding: 1.5em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px var(--card-shadow);
+  border: none;
+}
+
+.transfer-section {
+  margin-bottom: 1em;
+}
+
+.transfer-label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.transfer-select,
+.transfer-input,
+.transfer-textarea {
+  width: 100%;
+  padding: 0.75em;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  font-size: 1em;
+  font-family: inherit;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  appearance: none;
+}
+
+.transfer-select:focus,
+.transfer-input:focus,
+.transfer-textarea:focus {
+  outline: none;
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+}
+
+.transfer-select:disabled,
+.transfer-input:disabled,
+.transfer-textarea:disabled {
+  background: var(--input-disabled-bg);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Date input calendar icon styling */
+.transfer-input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.5);
+  opacity: 0.8;
+}
+
+.dark-mode .transfer-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.9;
+}
+
+.amount-input-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: 12px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.amount-input {
+  padding-left: 32px !important;
+}
+
+.bank-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.account-number {
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+
+.balance {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.transfer-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.transfer-alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 1em;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.error-alert {
+  background: #fee2e2;
+  color: #dc2626;
+  border-left: 4px solid #dc2626;
+}
+
+.success-alert {
+  background: #d1fae5;
+  color: #059669;
+  border-left: 4px solid #059669;
+}
+
+.transfer-btn-submit {
+  width: 100%;
+  padding: 0.75em;
+  margin-top: 0.5em;
+  background-color: #a855f7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.2s;
+}
+
+.transfer-btn-submit:hover:not(:disabled) {
+  background-color: #9333ea;
+  transform: translateY(-2px);
+}
+
+.transfer-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.transfer-btn-cancel {
+  width: 100%;
+  padding: 0.75em;
+  margin-top: 0.5em;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.transfer-btn-cancel:hover:not(:disabled) {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.transfer-btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .transfer-form-google-pay {
+    padding: 1.25em;
+  }
+}
+
+@media (max-width: 768px) {
+  .transfer-form-google-pay {
+    padding: 1em;
+  }
+}

@@ -64,6 +64,24 @@ export interface IncomeFormData {
   bankName: string;
 }
 
+// Transfer Types
+export interface Transfer {
+  id: number;
+  fromBankName: string;
+  toBankName: string;
+  amount: number;
+  date: string;
+  description: string;
+}
+
+export interface TransferFormData {
+  fromBankName: string;
+  toBankName: string;
+  amount: number | string;
+  date: string;
+  description: string;
+}
+
 // Stats Types
 export interface Stats {
   income: number;
