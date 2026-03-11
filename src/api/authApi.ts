@@ -85,11 +85,11 @@ export const authApi = {
     return null;
   },
 
-  setAuthData: (loginResponse: LoginResponse) => {
+  setAuthData: (loginResponse: LoginResponse): boolean => {
     // Validate that we have a valid token before storing
-    if (!loginResponse.jwtToken || typeof loginResponse.jwtToken !== 'string') {
+    if (!loginResponse.jwtToken || typeof loginResponse.jwtToken !== 'string' || loginResponse.jwtToken.length === 0) {
       console.error('[AUTH API] Invalid jwtToken received:', loginResponse.jwtToken);
-      return;
+      return false;
     }
     
     localStorage.setItem('jwtToken', loginResponse.jwtToken);
@@ -106,6 +106,7 @@ export const authApi = {
     };
     localStorage.setItem('user', JSON.stringify(user));
     console.log('[AUTH API] Auth data set for user:', loginResponse.email);
+    return true;
   },
 
   isAuthenticated: () => {

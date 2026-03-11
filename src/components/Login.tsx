@@ -26,6 +26,14 @@ export const Login = ({ onLoginSuccess, onSwitchToSignup, onLoginFailure }: Logi
     }));
   };
 
+  const showError = (errorMsg: string) => {
+    setError(errorMsg);
+    // Auto-dismiss error after 2.5 seconds
+    setTimeout(() => {
+      setError('');
+    }, 2500);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -34,8 +42,27 @@ export const Login = ({ onLoginSuccess, onSwitchToSignup, onLoginFailure }: Logi
     try {
       console.log('[LOGIN] Attempting login with:', formData.email);
       const response = await authApi.login(formData);
-      console.log('[LOGIN] Login successful, setting auth data');
-      authApi.setAuthData(response);
+      console.log('[LOGIN] Response received:', response);
+      
+      // Try to set auth data and check if it was successful
+      const authDataSet = authApi.setAuthData(response);
+      
+      if (!authDataSet) {
+        console.error('[LOGIN] Failed to set auth data - invalid token from backend');
+        authApi.logout();
+        if (onLoginFailure) {
+          onLoginFailure();
+        }
+        setFormData({
+          email: '',
+          password: '',
+        });
+        const errorMsg = 'Login failed: email or password invalid';
+        showError(errorMsg);
+        return;
+      }
+      
+      console.log('[LOGIN] Login successful, auth data set properly');
       onLoginSuccess();
     } catch (err: any) {
       console.log('[LOGIN] Login failed, clearing credentials and notifying app');
@@ -53,9 +80,16 @@ export const Login = ({ onLoginSuccess, onSwitchToSignup, onLoginFailure }: Logi
         password: '',
       });
       
-      const errorMsg = err?.response?.data?.message || 'Login failed. Please check your credentials.';
-      setError(errorMsg);
-      console.error('Login error:', err);
+      // Provide specific error messages based on the error
+      let errorMsg = 'Login failed: email or password invalid';
+      
+      showError(errorMsg);
+      console.error('[LOGIN] Login error:', {
+        status: err?.response?.status,
+        message: err?.response?.data?.message,
+        error: err?.message,
+      });
+      console.log('[LOGIN] Error state set to:', errorMsg);
     } finally {
       setLoading(false);
     }
