@@ -93,12 +93,17 @@ function App() {
   useEffect(() => {
     // Check if user is already authenticated
     const isAuth = authApi.isAuthenticated();
+    console.log('[APP] App initializing, isAuthenticated:', isAuth);
     if (isAuth) {
       const storedUser = authApi.getStoredUser();
+      console.log('[APP] Stored user:', storedUser?.email || 'none');
       if (storedUser) {
         setAuthUser(storedUser);
         setIsAuthenticated(true);
+        console.log('[APP] User auto-logged in');
       }
+    } else {
+      console.log('[APP] No valid authentication found');
     }
     setAppInitializing(false);
   }, []);
@@ -278,6 +283,17 @@ function App() {
     }
   };
 
+  const handleLoginFailure = () => {
+    console.log('[APP] Login failed, clearing auth state');
+    setIsAuthenticated(false);
+    setAuthUser(null);
+    setExpenses([]);
+    setIncomes([]);
+    setTransfers([]);
+    setBanks([]);
+    setStats(null);
+  };
+
   const handleSignupSuccess = () => {
     setAuthPage('login');
   };
@@ -308,6 +324,10 @@ function App() {
 
   return (
     <div className="app">
+      {(() => {
+        console.log('[APP RENDER] isAuthenticated:', isAuthenticated, 'appInitializing:', appInitializing, 'showLanding:', showLanding, 'authPage:', authPage);
+        return null;
+      })()}
       {isAuthenticated ? (
         <>
           <Navigation
@@ -432,6 +452,7 @@ function App() {
             <Login
               onLoginSuccess={handleLoginSuccess}
               onSwitchToSignup={() => setAuthPage('signup')}
+              onLoginFailure={handleLoginFailure}
             />
           ) : (
             <Signup

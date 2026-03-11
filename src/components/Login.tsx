@@ -7,9 +7,10 @@ import './Login.css';
 interface LoginProps {
   onLoginSuccess: () => void;
   onSwitchToSignup: () => void;
+  onLoginFailure?: () => void;
 }
 
-export const Login = ({ onLoginSuccess, onSwitchToSignup }: LoginProps) => {
+export const Login = ({ onLoginSuccess, onSwitchToSignup, onLoginFailure }: LoginProps) => {
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
     password: '',
@@ -31,10 +32,27 @@ export const Login = ({ onLoginSuccess, onSwitchToSignup }: LoginProps) => {
     setLoading(true);
 
     try {
+      console.log('[LOGIN] Attempting login with:', formData.email);
       const response = await authApi.login(formData);
+      console.log('[LOGIN] Login successful, setting auth data');
       authApi.setAuthData(response);
       onLoginSuccess();
     } catch (err: any) {
+      console.log('[LOGIN] Login failed, clearing credentials and notifying app');
+      // Clear any stale credentials from localStorage on login failure
+      authApi.logout();
+      
+      // Notify app that login failed so it can clear its auth state
+      if (onLoginFailure) {
+        onLoginFailure();
+      }
+      
+      // Reset form data
+      setFormData({
+        email: '',
+        password: '',
+      });
+      
       const errorMsg = err?.response?.data?.message || 'Login failed. Please check your credentials.';
       setError(errorMsg);
       console.error('Login error:', err);
