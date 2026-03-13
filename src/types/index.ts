@@ -124,6 +124,11 @@ export interface UpdatePasswordRequest {
   newPassword: string;
 }
 
+export interface ResetPasswordRequest {
+  accessToken: string;
+  newPassword: string;
+}
+
 export interface UpdateProfileRequest {
   name?: string;
   about?: string;

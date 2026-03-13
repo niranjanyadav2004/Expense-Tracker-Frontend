@@ -198,6 +198,132 @@
   font-size: 12px;
 }
 
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .settings-page {
+    background-color: #1a1a1a;
+  }
+
+  .settings-header h2 {
+    color: #e8e8e8;
+  }
+
+  .settings-header p {
+    color: #aaa;
+  }
+
+  .settings-content {
+    background: #2a2a2a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .settings-tabs {
+    border-bottom-color: #404040;
+    background-color: #1f1f1f;
+  }
+
+  .tab-btn {
+    color: #999;
+  }
+
+  .tab-btn:hover {
+    color: #e8e8e8;
+    background-color: #333;
+  }
+
+  .tab-btn.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+  }
+
+  .settings-section h3 {
+    color: #e8e8e8;
+  }
+
+  .section-description {
+    color: #aaa;
+  }
+
+  .error-message {
+    background-color: #3a2220;
+    color: #ff8a7b;
+    border-left-color: #ff6b5b;
+  }
+
+  .success-message {
+    background-color: #1f3a2a;
+    color: #6ee7b7;
+    border-left-color: #10b981;
+  }
+
+  .form-group label {
+    color: #e8e8e8;
+  }
+
+  .form-group input {
+    background-color: #333;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .form-group input::placeholder {
+    color: #888;
+  }
+
+  .form-group input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  }
+
+  .form-group input:disabled {
+    background-color: #252525;
+    color: #999;
+  }
+
+  .password-hint {
+    color: #777;
+  }
+
+  .btn-update {
+    background-color: #667eea;
+    color: white;
+  }
+
+  .btn-update:hover:not(:disabled) {
+    background-color: #5558e3;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .preference-item {
+    border-color: #404040;
+    background-color: #252525;
+  }
+
+  .preference-info h4 {
+    color: #e8e8e8;
+  }
+
+  .preference-info p {
+    color: #aaa;
+  }
+
+  .preference-info-box {
+    background-color: #333;
+    border-color: #404040;
+    color: #aaa;
+  }
+}
+
+.preference-info-box {
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background-color: #f3f4f6;
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
 .checkbox {
   width: 20px;
   height: 20px;

@@ -50,10 +50,16 @@
   border-radius: 4px;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background-color 0.3s;
   box-sizing: border-box;
   background-color: var(--input-bg);
   color: var(--text-primary);
+}
+
+.form-group input:hover:not(:disabled),
+.form-group textarea:hover:not(:disabled) {
+  background-color: #fafbfc;
+  border-color: var(--border-primary);
 }
 
 .form-group input:focus,
@@ -67,6 +73,67 @@
 .form-group textarea:disabled {
   background-color: var(--input-disabled-bg);
   cursor: not-allowed;
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid var(--border-primary);
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.3s, background-color 0.3s;
+  box-sizing: border-box;
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.password-input-wrapper input:hover:not(:disabled) {
+  background-color: #fafbfc;
+  border-color: var(--border-primary);
+}
+
+.password-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.password-input-wrapper input:disabled {
+  background-color: var(--input-disabled-bg);
+  cursor: not-allowed;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #666;
+  border-radius: 4px;
+}
+
+.toggle-password:hover:not(:disabled) {
+  background-color: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.toggle-password:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .btn-submit {
@@ -179,4 +246,58 @@
 .switch-link:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.forgot-password-link {
+  background: none;
+  border: none;
+  color: #646cff;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 13px;
+  margin-top: 6px;
+  display: block;
+  text-align: right;
+  padding: 0;
+}
+
+.forgot-password-link:hover:not(:disabled) {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.forgot-password-link:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .password-input-wrapper input {
+    background-color: var(--input-bg);
+    border-color: var(--border-primary);
+    color: var(--text-primary);
+  }
+
+  .password-input-wrapper input:hover:not(:disabled) {
+    background-color: var(--input-bg);
+    border-color: var(--border-secondary);
+  }
+
+  .password-input-wrapper input:focus {
+    border-color: var(--input-focus-border);
+    background-color: var(--input-bg);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+
+  .toggle-password {
+    color: var(--text-secondary);
+  }
+
+  .toggle-password:hover:not(:disabled) {
+    background-color: rgba(102, 126, 234, 0.15);
+    color: #667eea;
+  }
 }

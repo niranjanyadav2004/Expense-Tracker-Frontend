@@ -3,6 +3,8 @@ import { Navigation } from './components/Navigation';
 import { Landing } from './components/Landing';
 import { Login } from './components/Login';
 import { Signup } from './components/Signup';
+import { ForgotPassword } from './components/ForgotPassword';
+import { ResetPassword } from './components/ResetPassword';
 import { Profile } from './components/Profile';
 import { BankManagement } from './components/BankManagement';
 import { ConfirmationModal } from './components/ConfirmationModal';
@@ -38,7 +40,8 @@ function App() {
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-  const [authPage, setAuthPage] = useState<'login' | 'signup'>('login');
+  const [authPage, setAuthPage] = useState<'login' | 'signup' | 'forgotPassword' | 'resetPassword'>('login');
+  const [tokenFromUrl, setTokenFromUrl] = useState<string | undefined>(undefined);
   const [appInitializing, setAppInitializing] = useState(true);
   const [showLanding, setShowLanding] = useState(true);
 
@@ -91,6 +94,14 @@ function App() {
   };
 
   useEffect(() => {
+    // Check if there's a reset token in the URL
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      setTokenFromUrl(token);
+      setAuthPage('resetPassword');
+    }
+
     // Check if user is already authenticated
     const isAuth = authApi.isAuthenticated();
     console.log('[APP] App initializing, isAuthenticated:', isAuth);
@@ -108,12 +119,12 @@ function App() {
     setAppInitializing(false);
   }, []);
 
-  // Fetch data only when authenticated
+  // Fetch data only when authenticated AND not resetting password
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !tokenFromUrl) {
       fetchAllData();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, tokenFromUrl]);
 
   const handleAddExpense = async (data: ExpenseFormData) => {
     setLoading(true);
@@ -325,10 +336,20 @@ function App() {
   return (
     <div className="app">
       {(() => {
-        console.log('[APP RENDER] isAuthenticated:', isAuthenticated, 'appInitializing:', appInitializing, 'showLanding:', showLanding, 'authPage:', authPage);
+        console.log('[APP RENDER] isAuthenticated:', isAuthenticated, 'appInitializing:', appInitializing, 'showLanding:', showLanding, 'authPage:', authPage, 'tokenFromUrl:', tokenFromUrl);
         return null;
       })()}
-      {isAuthenticated ? (
+
+      {/* PRIORITY 1: If reset password token exists, show reset password page regardless of auth status */}
+      {tokenFromUrl && authPage === 'resetPassword' ? (
+        <ResetPassword
+          onBackToLogin={() => {
+            setAuthPage('login');
+            setTokenFromUrl(undefined);
+          }}
+          tokenFromUrl={tokenFromUrl}
+        />
+      ) : isAuthenticated ? (
         <>
           <Navigation
             activeTab={activeTab}
@@ -452,12 +473,34 @@ function App() {
             <Login
               onLoginSuccess={handleLoginSuccess}
               onSwitchToSignup={() => setAuthPage('signup')}
+              onForgotPassword={() => setAuthPage('forgotPassword')}
               onLoginFailure={handleLoginFailure}
             />
-          ) : (
+          ) : authPage === 'signup' ? (
             <Signup
               onSignupSuccess={handleSignupSuccess}
               onSwitchToLogin={() => setAuthPage('login')}
+            />
+          ) : authPage === 'forgotPassword' ? (
+            <ForgotPassword
+              onBackToLogin={() => setAuthPage('login')}
+              onEmailSubmitSuccess={() => setAuthPage('login')}
+            />
+          ) : (
+            <ResetPassword
+              onBackToLogin={() => {
+                // Logout and redirect to login
+                setIsAuthenticated(false);
+                setAuthUser(null);
+                setExpenses([]);
+                setIncomes([]);
+                setTransfers([]);
+                setBanks([]);
+                setStats(null);
+                setTokenFromUrl(undefined);
+                setAuthPage('login');
+              }}
+              tokenFromUrl={tokenFromUrl}
             />
           )}
         </>

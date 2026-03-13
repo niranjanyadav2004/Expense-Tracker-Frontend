@@ -30,6 +30,7 @@
   color: var(--text-primary);
   box-sizing: border-box;
   appearance: none;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .income-form .form-group select {
@@ -43,6 +44,13 @@
   color: var(--text-primary);
   white-space: normal;
   word-wrap: break-word;
+}
+
+.income-form .form-group input:hover:not(:disabled),
+.income-form .form-group textarea:hover:not(:disabled),
+.income-form .form-group select:hover:not(:disabled) {
+  background-color: #fafbfc;
+  border-color: var(--border-primary);
 }
 
 .income-form .form-group input:focus,
@@ -168,5 +176,15 @@
   .income-form button {
     padding: 0.5em;
     font-size: 0.85em;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .income-form .form-group input:hover:not(:disabled),
+  .income-form .form-group textarea:hover:not(:disabled),
+  .income-form .form-group select:hover:not(:disabled) {
+    background-color: var(--input-bg);
+    border-color: var(--border-primary);
   }
 }

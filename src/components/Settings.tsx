@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { authApi } from '../api/authApi';
 import './Settings.css';
 
-export const Settings = () => {
+interface SettingsProps {
+  onLogout?: () => void;
+}
+
+export const Settings = ({ onLogout }: SettingsProps) => {
   const [activeTab, setActiveTab] = useState<'security' | 'preferences'>('security');
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -43,12 +47,19 @@ export const Settings = () => {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
       });
-      setSuccess('Password updated successfully!');
+      setSuccess('Password updated successfully! Redirecting to login...');
       setPasswordData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
+      // Logout and redirect after 2 seconds
+      setTimeout(() => {
+        authApi.logout();
+        if (onLogout) {
+          onLogout();
+        }
+      }, 2000);
     } catch (err: any) {
       const errorMsg = err?.response?.data?.message || 'Failed to update password';
       setError(errorMsg);

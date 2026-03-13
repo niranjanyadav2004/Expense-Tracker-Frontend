@@ -30,6 +30,7 @@
   color: var(--text-primary);
   box-sizing: border-box;
   appearance: none;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
 .form-group select {
@@ -43,6 +44,13 @@
   color: var(--text-primary);
   white-space: normal;
   word-wrap: break-word;
+}
+
+.form-group input:hover:not(:disabled),
+.form-group textarea:hover:not(:disabled),
+.form-group select:hover:not(:disabled) {
+  background-color: #fafbfc;
+  border-color: var(--border-primary);
 }
 
 .form-group input:focus,
@@ -168,5 +176,15 @@
   .expense-form button {
     padding: 0.5em;
     font-size: 0.85em;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .form-group input:hover:not(:disabled),
+  .form-group textarea:hover:not(:disabled),
+  .form-group select:hover:not(:disabled) {
+    background-color: var(--input-bg);
+    border-color: var(--border-primary);
   }
 }

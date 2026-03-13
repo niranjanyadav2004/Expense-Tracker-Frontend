@@ -34,6 +34,14 @@
   color: var(--text-primary);
   box-sizing: border-box;
   appearance: none;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.transfer-select:hover:not(:disabled),
+.transfer-input:hover:not(:disabled),
+.transfer-textarea:hover:not(:disabled) {
+  background: #fafbfc;
+  border-color: var(--border-primary);
 }
 
 .transfer-select:focus,
@@ -188,5 +196,15 @@
 @media (max-width: 768px) {
   .transfer-form-google-pay {
     padding: 1em;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .transfer-select:hover:not(:disabled),
+  .transfer-input:hover:not(:disabled),
+  .transfer-textarea:hover:not(:disabled) {
+    background: var(--input-bg);
+    border-color: var(--border-primary);
   }
 }
