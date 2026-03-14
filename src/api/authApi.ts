@@ -82,12 +82,12 @@ export const authApi = {
   },
 
   updatePassword: async (data: UpdatePasswordRequest): Promise<any> => {
-    return api.post('/auth/update-password', data);
+    return apiClient.post('/auth/update-password', data);
   },
 
   resetPassword: async (accessToken: string, newPassword: string): Promise<any> => {
     // Don't use the interceptor for this endpoint since it's permitAll
-    return axios.post(`${API_BASE_URL}/auth/reset-password?token=${accessToken}`, {
+    return axios.post(`${config.api.baseURL}/auth/reset-password?token=${accessToken}`, {
       password: newPassword,
     }, {
       headers: {
@@ -97,7 +97,7 @@ export const authApi = {
   },
 
   updateProfile: async (data: UpdateProfileRequest): Promise<any> => {
-    return api.put('/auth/update-profile', data);
+    return apiClient.put('/auth/update-profile', data);
   },
 
   updateUserData: (user: Partial<AuthUser>) => {
