@@ -1,0 +1,7 @@
+{
+  "api": {
+    "baseURL": "https://staging-api.yourdomain.com/api"
+  },
+  "environment": "staging",
+  "debug": true
+}

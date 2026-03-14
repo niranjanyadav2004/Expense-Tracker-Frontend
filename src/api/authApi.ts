@@ -1,63 +1,20 @@
 import axios from 'axios';
 import { RegisterRequest, LoginRequest, LoginResponse, RegisterResponse, RefreshTokenRequest, UpdatePasswordRequest, UpdateProfileRequest, AuthUser } from '../types';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: false,
-});
-
-// Add request interceptor
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('jwtToken');
-    // Only add Authorization header if we have a valid token
-    if (token && typeof token === 'string' && token !== 'undefined' && token.length > 0) {
-      config.headers.Authorization = `Bearer ${token}`;
-      console.log(`[AUTH API] Adding Authorization header for ${config.method?.toUpperCase()} ${config.url}`);
-    } else {
-      console.log(`[AUTH API] NO TOKEN - ${config.method?.toUpperCase()} ${config.url}`);
-    }
-    return config;
-  },
-  (error) => {
-    console.error('[AUTH API Request Error]', error);
-    return Promise.reject(error);
-  }
-);
-
-// Add response interceptor
-api.interceptors.response.use(
-  (response) => {
-    console.log(`[AUTH API] Response received from ${response.config.url}`);
-    return response.data;
-  },
-  (error) => {
-    console.error('[AUTH API Error]', {
-      message: error.message,
-      response: error.response?.status,
-      data: error.response?.data,
-    });
-    return Promise.reject(error);
-  }
-);
+import { apiClient } from './axiosInstance';
+import { config } from '../config';
 
 export const authApi = {
   register: async (data: RegisterRequest): Promise<RegisterResponse> => {
-    return api.post('/auth/register', data);
+    return apiClient.post('/auth/register', data);
   },
 
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    return api.post('/auth/login', data);
+    return apiClient.post('/auth/login', data);
   },
 
   forgotPassword: async (email: string): Promise<any> => {
     // Don't use the interceptor for this endpoint since it's permitAll
-    return axios.post(`${API_BASE_URL}/auth/forget-password`, { email }, {
+    return axios.post(`${config.api.baseURL}/auth/forget-password`, { email }, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -65,7 +22,7 @@ export const authApi = {
   },
 
   refreshToken: async (data: RefreshTokenRequest): Promise<LoginResponse> => {
-    return api.post('/auth/refresh', data);
+    return apiClient.post('/auth/refresh', data);
   },
 
   logout: () => {

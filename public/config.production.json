@@ -1,0 +1,7 @@
+{
+  "api": {
+    "baseURL": "https://api.yourdomain.com/api"
+  },
+  "environment": "production",
+  "debug": false
+}
