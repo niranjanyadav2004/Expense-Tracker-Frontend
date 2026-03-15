@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseURL": "https://staging-api.yourdomain.com/api"
+    "baseURL": "https://expense-tracker-1-0-plwc.onrender.com/api"
   },
   "environment": "staging",
   "debug": true

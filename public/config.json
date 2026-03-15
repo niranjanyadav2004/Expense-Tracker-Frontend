@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseURL": "http://localhost:8080/api"
+    "baseURL": "https://expense-tracker-1-0-plwc.onrender.com/api"
   },
   "environment": "development",
   "debug": false
